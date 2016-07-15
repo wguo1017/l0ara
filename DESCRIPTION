@@ -1,0 +1,13 @@
+Package: l0ara
+Type: Package
+Title: Sparse Generalized Linear Model with L0 Approximation for Feature
+    Selection
+Version: 0.1
+Date: 2016-06-28
+Author: Wenchuan Guo, Zhenqiu Liu, Fengzhu Sun, Dermot P McGovern, Sandra
+    Orsulic
+Maintainer: Wenchuan Guo <wguo007@ucr.edu>
+Description: An efficient algorithm for feature selection with L0 penalty.
+License: GPL-2
+LazyData: TRUE
+RoxygenNote: 5.0.1
