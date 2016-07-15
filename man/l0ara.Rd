@@ -9,7 +9,7 @@ l0ara(x, y, family, lam, maxit, eps)
 \arguments{
 \item{x}{Input matrix, of dimension nobs x nvars; each row is an observation vector}
 
-\item{y}{Response variable. Quantitative for \code{family="gaussian"} or positive quantitative\code{family="gamma"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}}
+\item{y}{Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for\code{family="gamma"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}}
 
 \item{family}{Response type(see above)}
 
@@ -61,6 +61,21 @@ print(res.logit)
 predict(res.logit, newx=matrix(rnorm(3,p),3,p))
 coef(res.logit)
 
+# Poisson regression
+# Generate design matrix and response variable
+n <- 100
+p <- 40
+x <- matrix(rnorm(n*p), n, p)
+beta <- c(1,0,0.5,0.3,rep(0,p-4))
+mu <- exp(x\%*\%beta)
+y <- rpois(n, mu)
+# fit sparse logistic regression
+res.pois <- l0ara(x, y, family="pois", 0.7)
+
+# predict for new observations
+print(res.pois)
+predict(res.pois, newx=matrix(rnorm(3,p),3,p))
+coef(res.pois)
 }
 \author{
 Wenchuan Guo <wguo007@ucr.edu>
