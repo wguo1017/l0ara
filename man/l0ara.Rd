@@ -9,7 +9,7 @@ l0ara(x, y, family, lam, maxit, eps)
 \arguments{
 \item{x}{Input matrix, of dimension nobs x nvars; each row is an observation vector}
 
-\item{y}{Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for\code{family="gamma"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}}
+\item{y}{Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}}
 
 \item{family}{Response type(see above)}
 

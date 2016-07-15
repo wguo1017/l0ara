@@ -2,7 +2,7 @@
 #' @description An efficient algorithm for feature selection with L0 penalty.
 #' @usage  l0ara(x, y, family, lam, maxit, eps)
 #' @param x Input matrix, of dimension nobs x nvars; each row is an observation vector
-#' @param y Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for\code{family="gamma"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}
+#' @param y Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}
 #' @param family Response type(see above)
 #' @param lam A user supplied \code{lambda} value
 #' @param maxit Maximum number of passes over the data for \code{lambda}
@@ -64,7 +64,7 @@
 #' coef(res.pois)
 
 #' @export
-l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson"), lam, maxit = 10^3, eps = 1e-04){
+l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, maxit = 10^3, eps = 1e-04){
   # error checking
   family <- match.arg(family)
   if(missing(lam)){
@@ -85,6 +85,22 @@ l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson"), lam
     stop("length of y not equal to the number of rows of x")
   }
 
+#   # standardize
+#   if (standardize) {
+#     xx <- scale(x)
+#     center <- colMeans(x)
+#     scale <- apply(x,2,sd)
+#     nd <- which(scale > 1e-6)
+#     if (length(nd) != np[2]) xx <- xx[ ,nd, drop=FALSE]
+#   } else {
+#     xx <- x
+#   }
+#   if (family=="gaussian") {
+#     yy <- y - mean(y)
+#   } else {
+#     yy <- y
+#   }
+
   # fitting model
   if (family == "gaussian") {
     out <- gaussl0(x, y, lam, maxit, eps)
@@ -92,13 +108,15 @@ l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson"), lam
   if (family == "gamma") {
     out <- gammal0(x, y, lam, maxit, eps)
   }
+  if (family == "inv.gaussian") {
+    out <- invl0(x, y, lam, maxit, eps)
+  }
   if (family == "logit") {
     out <- logitl0(x, y, lam, maxit, eps)
   }
   if (family == "poisson") {
     out <- poisl0(x, y, lam, maxit, eps)
   }
-
   # output
   res <- list(beta = out$beta, df = sum(out$beta!=0), lambda = lam, iter = out$iter, family = out$family)
   class(res) <- "l0ara"

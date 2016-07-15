@@ -15,7 +15,7 @@ predict.l0ara <- function(object, newx, type=c("link", "response", "coefficients
   if (type=="coefficients") return(beta)
   eta <- newx%*%beta
   if (type=="link" || object$family=="gaussian") return(drop(eta))
-  response <- switch(object$family, logit = exp(eta)/(1+exp(eta)), poisson = exp(eta), gamma = 1/eta)
+  response <- switch(object$family, logit = exp(eta)/(1+exp(eta)), poisson = exp(eta), gamma = 1/eta, inv.gaussian = 1/sqrt(eta))
   if (type=="response") return(drop(response))
   if (type=="class") {
     if (object$family=="logit") {
