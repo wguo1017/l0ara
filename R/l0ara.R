@@ -47,6 +47,22 @@
 #' predict(res.logit, newx=matrix(rnorm(3,p),3,p))
 #' coef(res.logit)
 #'
+#' # Poisson regression
+#' # Generate design matrix and response variable
+#' n <- 100
+#' p <- 40
+#' x <- matrix(rnorm(n*p), n, p)
+#' beta <- c(1,0,0.5,0.3,rep(0,p-4))
+#' mu <- exp(x%*%beta)
+#' y <- rpois(n, mu)
+#' # fit sparse logistic regression
+#' res.pois <- l0ara(x, y, family="pois", 0.7)
+#'
+#' # predict for new observations
+#' print(res.pois)
+#' predict(res.pois, newx=matrix(rnorm(3,p),3,p))
+#' coef(res.pois)
+
 #' @export
 l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson"), lam, maxit = 10^3, eps = 1e-04){
   # error checking
