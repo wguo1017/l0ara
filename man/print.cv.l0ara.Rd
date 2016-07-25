@@ -18,7 +18,7 @@ This function print the general information of the cross validated fit.
 This function makes it easier to see the cross validation results.
 }
 \author{
-Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+Wenchuan Guo <wguo007@ucr.edu>
 }
 \seealso{
 \code{predict}, \code{coef} methods and \code{l0ara} function.

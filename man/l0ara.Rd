@@ -7,28 +7,32 @@
 l0ara(x, y, family, lam, maxit, eps)
 }
 \arguments{
-\item{x}{Input matrix, of dimension nobs x nvars; each row is an observation vector}
+\item{x}{Input matrix, of dimension nobs x nvars; each row is an observation vector.}
 
-\item{y}{Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}}
+\item{y}{Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}.}
 
-\item{family}{Response type(see above)}
+\item{family}{Response type(see above).}
 
-\item{lam}{A user supplied \code{lambda} value}
+\item{lam}{A user supplied \code{lambda} value. Try use \code{cv.l0ara} first to select optimal tunning and then refit with \code{lam.min}.}
 
-\item{maxit}{Maximum number of passes over the data for \code{lambda}}
+\item{maxit}{Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.}
 
-\item{eps}{Convergence threshold}
+\item{eps}{Convergence threshold. Default value is \code{1e-4}.}
 }
 \value{
-\item{beta}{a vector of coefficients}
- \item{df}{number of nonzero coefficients}
- \item{iter}{number of iterations}
- \item{lambda}{the lambda used}
- \item{x}{design matrix}
- \item{y}{response}
+An object with S3 class "l0ara" containing:
+ \item{beta}{A vector of coefficients}
+ \item{df}{Number of nonzero coefficients}
+ \item{iter}{Number of iterations}
+ \item{lambda}{The lambda used}
+ \item{x}{Design matrix}
+ \item{y}{Response variable}
 }
 \description{
 An adaptive ridge algorithm for feature selection with L0 penalty.
+}
+\details{
+The sequence of models indexed by the parameter lambda is fit using adptive ridge algorithm. The objective function for generalized linear models (including \code{family} above) is defined to be \deqn{-(log likelihood)+(\lambda/2)*|\beta|_0} This adaptive ridge algorithm is developed to approximate L0 penalized generalized linear models with sequential optimization and is efficient for high-dimensional data.
 }
 \examples{
 # Linear regression
@@ -83,6 +87,6 @@ coef(res.pois)
 Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
-\code{predict}, \code{coef} methods.
+\code{cv.l0ara}, \code{predict}, \code{coef} methods.
 }
 

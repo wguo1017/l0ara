@@ -2,22 +2,24 @@
 % Please edit documentation in R/summary.R
 \name{plot.l0ara}
 \alias{plot.l0ara}
-\title{plot for a "l0ara" object}
+\title{plot for an "l0ara" object}
 \usage{
-\method{plot}{l0ara}(x, auc = FALSE, ...)
+\method{plot}{l0ara}(x, auc = FALSE, split = FALSE, ...)
 }
 \arguments{
 \item{x}{Fitted "l0ara" object.}
 
-\item{auc}{logical; if \code{TRUE}, produces \code{auc} curve for "family="logit""}
+\item{auc}{logical; if \code{TRUE}, produces \code{auc} curve for \code{family=logit}.}
+
+\item{split}{logical; if if \code{TRUE}, produces seperate plots.}
 
 \item{...}{Not used argument.}
 }
 \description{
-Auc plot for logsitic regression
+Two plots are availiable: a plot of fitted value against linear predictor; \code{roc}(\code{auc}) curve for \code{family="logit"}.
 }
-\details{
-Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+\author{
+Wenchuan Guo <wguo007@ucr.edu>
 }
 \seealso{
 \code{predict}, \code{coef} methods and \code{l0ara} function.
