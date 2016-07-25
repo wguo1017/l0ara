@@ -67,7 +67,7 @@ List l0araC(arma::mat x, arma::vec y, String family, double lam, int maxit, doub
     if(n > m) {
       w = solve(trans(Xt)*A*x+lam*eye(m,m), trans(Xt)*z);
     } else {
-      w = trans(Xt)*inv(A*x*trans(Xt)+lam*eye(n,n))*z;
+      w = trans(Xt)*solve(A*x*trans(Xt)+lam*eye(n,n), z);
     }
     if(family!="gaussian"){
       Xt = repmat(trans(w % w), n, 1) % x;
