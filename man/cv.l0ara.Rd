@@ -7,11 +7,11 @@
 cv.l0ara(x, y, family, lam, measure, nfolds, maxit, eps, seed)
 }
 \arguments{
-\item{x}{Input matrix as in \code{l0ara}}
+\item{x}{Input matrix as in \code{l0ara}.}
 
-\item{y}{Response variable as in \code{l0ara}}
+\item{y}{Response variable as in \code{l0ara}.}
 
-\item{family}{Response type as in \code{l0ara}}
+\item{family}{Response type as in \code{l0ara}.}
 
 \item{lam}{A user supplied \code{lambda} sequence in descending or asecending order.}
 
@@ -19,22 +19,27 @@ cv.l0ara(x, y, family, lam, measure, nfolds, maxit, eps, seed)
 
 \item{nfolds}{Number of folds. Default value is 10. Smallest value is 3.}
 
-\item{maxit}{Maximum number of passes over the data for \code{lambda}}
+\item{maxit}{Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.}
 
-\item{eps}{Convergence threshold}
+\item{eps}{Convergence threshold. Default value is \code{1e-4}.}
 
-\item{seed}{Seed of random number generator}
+\item{seed}{Seed of random number generator.}
 }
 \value{
-\item{cv.error}{The mean cross validated error for given lambda sequence}
+An object with S3 class "cv.l0ara" containing:
+ \item{cv.error}{The mean cross validated error for given lambda sequence}
  \item{lam.min}{The lambda gives min cv.error}
  \item{lambda}{The lambda used}
- \item{measure}{type of measure}
- \item{family}{model used}
-Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+ \item{measure}{Type of measure}
+ \item{family}{Model used}
+ \item{x}{Design matrix}
+ \item{y}{Response variable}
 }
 \description{
 Does k-fold cross-validation for l0ara, produces a plot, and returns the optimal \code{lambda}
+}
+\details{
+This function calls \code{l0ara} \code{nfolds} times, each time leaving out \code{1/nfolds} of the data. The cross-validation error is based on etiher mean square error (\code{mse}) or mean absolute error (\code{mae}).
 }
 \examples{
 #' # Linear regression
@@ -47,6 +52,9 @@ noise <- rnorm(n)
 y <- x\%*\%beta+noise
 lam <- c(0.1, 0.3, 0.5)
 fit <- cv.l0ara(x, y, family="gaussian", lam, measure = "mse")
+}
+\author{
+Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
 \code{l0ara}.
