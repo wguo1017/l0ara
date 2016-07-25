@@ -63,8 +63,8 @@
 #' beta <- c(1,0,0.5,0.3,rep(0,p-4))
 #' mu <- exp(x%*%beta)
 #' y <- rpois(n, mu)
-#' # fit sparse logistic regression
-#' res.pois <- l0ara(x, y, family="pois", 0.7)
+#' # fit sparse Poisson regression
+#' res.pois <- l0ara(x, y, family="poisson", 0.7)
 #'
 #' # predict for new observations
 #' print(res.pois)
