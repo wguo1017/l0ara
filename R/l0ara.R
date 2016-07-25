@@ -1,24 +1,27 @@
 #' fit a generalized linear model with l0 penalty
 #' @description An adaptive ridge algorithm for feature selection with L0 penalty.
 #' @usage  l0ara(x, y, family, lam, maxit, eps)
-#' @param x Input matrix, of dimension nobs x nvars; each row is an observation vector
-#' @param y Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}
-#' @param family Response type(see above)
-#' @param lam A user supplied \code{lambda} value
-#' @param maxit Maximum number of passes over the data for \code{lambda}
-#' @param eps Convergence threshold
-#' @return
-#'  \item{beta}{a vector of coefficients}
-#'  \item{df}{number of nonzero coefficients}
-#'  \item{iter}{number of iterations}
-#'  \item{lambda}{the lambda used}
-#'  \item{x}{design matrix}
-#'  \item{y}{response}
+#' @param x Input matrix, of dimension nobs x nvars; each row is an observation vector.
+#' @param y Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}.
+#' @param family Response type(see above).
+#' @param lam A user supplied \code{lambda} value. Try use \code{cv.l0ara} first to select optimal tunning and then refit with \code{lam.min}.
+#' @param maxit Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.
+#' @param eps Convergence threshold. Default value is \code{1e-4}.
+#' @details The sequence of models indexed by the parameter lambda is fit using adptive ridge algorithm. The objective function for generalized linear models (including \code{family} above) is defined to be \deqn{-(log likelihood)+(\lambda/2)*|\beta|_0} This adaptive ridge algorithm is developed to approximate L0 penalized generalized linear models with sequential optimization and is efficient for high-dimensional data.
+#' @return An object with S3 class "l0ara" containing:
+#'  \item{beta}{A vector of coefficients}
+#'  \item{df}{Number of nonzero coefficients}
+#'  \item{iter}{Number of iterations}
+#'  \item{lambda}{The lambda used}
+#'  \item{x}{Design matrix}
+#'  \item{y}{Response variable}
 #' @author
 #' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-#' @seealso \code{predict}, \code{coef} methods.
+#' @seealso \code{cv.l0ara}, \code{predict}, \code{coef} methods.
 #' @useDynLib l0ara
 #' @importFrom Rcpp evalCpp
+#' @import stats
+#' @import graphics
 #' @examples
 #' # Linear regression
 #' # Generate design matrix and response variable
@@ -70,13 +73,19 @@
 
 #' @export
 l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, maxit = 10^3, eps = 1e-04){
-  # data coersion
+  # error checking
   if (class(x) != "matrix") {
-    x <- as.matrix(x)
+    tmp <- try(x <- model.matrix(~0 + ., data = x), silent = TRUE)
+    if (class(tmp)[1] == "try-error")
+      stop("x must be a matrix or able to be coerced to a matrix")
+  }
+  if (class(y) != "numeric") {
+    tmp <- try(y <- as.numeric(y), silent = TRUE)
+    if (class(tmp)[1] == "try-error")
+      stop("y must numeric or able to be coerced to numeric")
   }
   y <- drop(y)
 
-  # error checking
   family <- match.arg(family)
   if(missing(lam)){
     stop("'lam' was not found(must be a postiive number)")

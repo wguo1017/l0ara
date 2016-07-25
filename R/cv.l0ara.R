@@ -1,21 +1,25 @@
 #' Cross validation for l0ara
 #' @description Does k-fold cross-validation for l0ara, produces a plot, and returns the optimal \code{lambda}
 #' @usage  cv.l0ara(x, y, family, lam, measure, nfolds, maxit, eps, seed)
-#' @param x Input matrix as in \code{l0ara}
-#' @param y Response variable as in \code{l0ara}
-#' @param family Response type as in \code{l0ara}
+#' @param x Input matrix as in \code{l0ara}.
+#' @param y Response variable as in \code{l0ara}.
+#' @param family Response type as in \code{l0ara}.
 #' @param lam A user supplied \code{lambda} sequence in descending or asecending order.
 #' @param measure Loss function used for corss validation. \code{measurer="mse"} or \code{"mae"} for all models. \code{"measure"="class"} only for logsitic regression.
 #' @param nfolds Number of folds. Default value is 10. Smallest value is 3.
-#' @param maxit Maximum number of passes over the data for \code{lambda}
-#' @param eps Convergence threshold
-#' @param seed Seed of random number generator
-#' @return
+#' @param maxit Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.
+#' @param eps Convergence threshold. Default value is \code{1e-4}.
+#' @param seed Seed of random number generator.
+#' @details This function calls \code{l0ara} \code{nfolds} times, each time leaving out \code{1/nfolds} of the data. The cross-validation error is based on etiher mean square error (\code{mse}) or mean absolute error (\code{mae}).
+#' @return An object with S3 class "cv.l0ara" containing:
 #'  \item{cv.error}{The mean cross validated error for given lambda sequence}
 #'  \item{lam.min}{The lambda gives min cv.error}
 #'  \item{lambda}{The lambda used}
-#'  \item{measure}{type of measure}
-#'  \item{family}{model used}
+#'  \item{measure}{Type of measure}
+#'  \item{family}{Model used}
+#'  \item{x}{Design matrix}
+#'  \item{y}{Response variable}
+#' @author
 #' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 #' @seealso \code{l0ara}.
 #' @examples
@@ -34,6 +38,17 @@
 cv.l0ara <- function(x, y, family = c("gaussian", "logit"), lam, measure = c("mse", "mae","class"), nfolds=10,  maxit = 10^3, eps = 1e-04, seed){
   measure <- match.arg(measure)
   # error checking
+  if (class(x) != "matrix") {
+    tmp <- try(x <- model.matrix(~0 + ., data = x), silent = TRUE)
+    if (class(tmp)[1] == "try-error")
+      stop("x must be a matrix or able to be coerced to a matrix")
+  }
+  if (class(y) != "numeric") {
+    tmp <- try(y <- as.numeric(y), silent = TRUE)
+    if (class(tmp)[1] == "try-error")
+      stop("y must numeric or able to be coerced to numeric")
+  }
+  y <- drop(y)
   if (!is.null(lam) && length(lam) < 2) {
     stop("Need a sequence values for lambda")
   }
@@ -43,11 +58,6 @@ cv.l0ara <- function(x, y, family = c("gaussian", "logit"), lam, measure = c("ms
   if (!missing(seed)) {
     set.seed(seed)
   }
-  # data coersion
-  if (class(x) != "matrix") {
-    x <- as.matrix(x)
-  }
-  y <- drop(y)
 
   #initialization
   n <- nrow(x)
@@ -71,7 +81,7 @@ cv.l0ara <- function(x, y, family = c("gaussian", "logit"), lam, measure = c("ms
   # cv.std <- apply(error, 1, sd)/sqrt(n)
   cv.error <- rowMeans(error)
   lam.min <- lam[which.min(cv.error)]
-  out <- list(cv.error=cv.error, lam.min=lam.min, measure=measure, lam=lam, family=family)
+  out <- list(cv.error=cv.error, lam.min=lam.min, measure=measure, lam=lam, family=family, x=x, y=y)
   class(out) <- "cv.l0ara"
   return(out)
 }
