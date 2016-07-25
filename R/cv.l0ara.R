@@ -73,4 +73,5 @@ cv.l0ara <- function(x, y, family = c("gaussian", "logit"), lam, measure = c("ms
   lam.min <- lam[which.min(cv.error)]
   out <- list(cv.error=cv.error, lam.min=lam.min, measure=measure, lam=lam, family=family)
   class(out) <- "cv.l0ara"
+  return(out)
 }
