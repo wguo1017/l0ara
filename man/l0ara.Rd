@@ -23,10 +23,12 @@ l0ara(x, y, family, lam, maxit, eps)
 \item{beta}{a vector of coefficients}
  \item{df}{number of nonzero coefficients}
  \item{iter}{number of iterations}
- \item{lambda}{The lambda used}
+ \item{lambda}{the lambda used}
+ \item{x}{design matrix}
+ \item{y}{response}
 }
 \description{
-An efficient algorithm for feature selection with L0 penalty.
+An adaptive ridge algorithm for feature selection with L0 penalty.
 }
 \examples{
 # Linear regression
@@ -78,7 +80,7 @@ predict(res.pois, newx=matrix(rnorm(3,p),3,p))
 coef(res.pois)
 }
 \author{
-Wenchuan Guo <wguo007@ucr.edu>
+Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
 \code{predict}, \code{coef} methods.

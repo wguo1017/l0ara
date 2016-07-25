@@ -9,9 +9,12 @@
 #' @author Wenchuan Guo <wguo007@ucr.edu>
 #' @seealso \code{coef} method and \code{l0ara} function.
 #' @export
-predict.l0ara <- function(object, newx, type=c("link", "response", "coefficients"), ...){
+predict.l0ara <- function(object, newx, type=c("link", "response", "coefficients", "class"), ...){
   type <- match.arg(type)
   beta <- coef.l0ara(object)
+  if(missing(newx)){
+    newx <- object$x
+  }
   if (type=="coefficients") return(beta)
   eta <- newx%*%beta
   if (type=="link" || object$family=="gaussian") return(drop(eta))
@@ -52,8 +55,53 @@ coef.l0ara <- function(object, ...){
 #' @seealso \code{predict}, \code{coef} methods and \code{l0ara} function.
 #' @export
 print.l0ara <- function(x, ...){
-  cat("Lambda used = ", x$lam, "\n")
-  cat("Model =", x$family, "\n")
-  cat("Iterations =", x$iter, "\n")
-  cat("Degree of freedom =", x$df,"\n")
+  cat("Lambda used : ", x$lam, "\n")
+  cat("Model : ", x$family, "\n")
+  cat("Iterations : ", x$iter, "\n")
+  cat("Degree of freedom : ", x$df,"\n")
+}
+
+#' summarizing the fits from a "cv.l0ara" object.
+#' @description This function print the general information of the cross validated fit.
+#' @param x Fitted "cv.l0ara" object.
+#' @param ... Not used argument.
+#' @details This function makes it easier to see the cross validation results.
+#' @author
+#' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+#' @seealso \code{predict}, \code{coef} methods and \code{l0ara} function.
+#' @export
+print.cv.l0ara <- function(x, ...){
+  cat("Number of Lambda used : ", length(x$lam), "\n")
+  cat("Model : ", x$family, "\n")
+  cat("Measure : ", x$measure, "\n")
+  cat("Minimumn error : ",x$cv.error, "\n")
+}
+
+#' plot for a "l0ara" object
+#' @description Auc plot for logsitic regression
+#' @param x Fitted "l0ara" object.
+#' @param auc logical; if \code{TRUE}, produces \code{auc} curve for "family="logit""
+#' @param ... Not used argument.
+#' @details
+#' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+#' @seealso \code{predict}, \code{coef} methods and \code{l0ara} function.
+#' @export
+plot.l0ara <- function(x, auc=FALSE, ...){
+  nplots <- ifelse(auc, 2, 1)
+  par(mfrow=c(1,nplots))
+  resp <- predict(x, type="response")
+  lp <-predict(x, type="link")
+  plot(lp, resp, xlab="Linear predictor", ylab="Fitted value", pch=20, main="Linear predictor v.s. Fitted", ...)
+  points(lp,x$y,col=3, pch=20)
+  legend("bottomright", legend = c("Fitted","Truth"), col=c(1,3), pch=rep(20,2))
+
+  if(x$family=="logit" & auc){
+    pred <- predict(x, x$x, type="class")
+    fp <- mean(pred[x$y==0]==1)
+    tp <- mean(pred[x$y==1]==1)
+    area <- fp*tp/2+(tp+1)*(1-fp)/2
+    plot(NA, xlab="False positive rate", ylab="True positive rate", xlim=c(0,1), ylim=c(0,1), main=paste("ROC curve for lambda =", x$lam,";", "AUC =", area), ...)
+    lines(c(0,fp,1), c(0,tp,1), col=4)
+    lines(c(0,1), c(0,1), lty=2)
+  }
 }

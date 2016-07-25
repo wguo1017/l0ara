@@ -1,5 +1,5 @@
 #' fit a generalized linear model with l0 penalty
-#' @description An efficient algorithm for feature selection with L0 penalty.
+#' @description An adaptive ridge algorithm for feature selection with L0 penalty.
 #' @usage  l0ara(x, y, family, lam, maxit, eps)
 #' @param x Input matrix, of dimension nobs x nvars; each row is an observation vector
 #' @param y Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}
@@ -11,9 +11,14 @@
 #'  \item{beta}{a vector of coefficients}
 #'  \item{df}{number of nonzero coefficients}
 #'  \item{iter}{number of iterations}
-#'  \item{lambda}{The lambda used}
-#' @author Wenchuan Guo <wguo007@ucr.edu>
+#'  \item{lambda}{the lambda used}
+#'  \item{x}{design matrix}
+#'  \item{y}{response}
+#' @author
+#' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 #' @seealso \code{predict}, \code{coef} methods.
+#' @useDynLib l0ara
+#' @importFrom Rcpp evalCpp
 #' @examples
 #' # Linear regression
 #' # Generate design matrix and response variable
@@ -65,13 +70,19 @@
 
 #' @export
 l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, maxit = 10^3, eps = 1e-04){
+  # data coersion
+  if (class(x) != "matrix") {
+    x <- as.matrix(x)
+  }
+  y <- drop(y)
+
   # error checking
   family <- match.arg(family)
   if(missing(lam)){
-    stop("'lam' was not found(must be a postiive number). ")
+    stop("'lam' was not found(must be a postiive number)")
   }
   if(length(lam)>1){
-    stop("Require lenght 1 for 'lam'.")
+    stop("Require lenght 1 for 'lam'")
   }
   if(lam < 0) {
     warning("lambda < 0; set to 0")
@@ -101,24 +112,25 @@ l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv
 #     yy <- y
 #   }
 
-  # fitting model
-  if (family == "gaussian") {
-    out <- gaussl0(x, y, lam, maxit, eps)
-  }
-  if (family == "gamma") {
-    out <- gammal0(x, y, lam, maxit, eps)
-  }
-  if (family == "inv.gaussian") {
-    out <- invl0(x, y, lam, maxit, eps)
-  }
-  if (family == "logit") {
-    out <- logitl0(x, y, lam, maxit, eps)
-  }
-  if (family == "poisson") {
-    out <- poisl0(x, y, lam, maxit, eps)
-  }
+#   # fitting model
+#   if (family == "gaussian") {
+#     out <- gaussl0(x, y, lam, maxit, eps)
+#   }
+#   if (family == "gamma") {
+#     out <- gammal0(x, y, lam, maxit, eps)
+#   }
+#   if (family == "inv.gaussian") {
+#     out <- invl0(x, y, lam, maxit, eps)
+#   }
+#   if (family == "logit") {
+#     out <- logitl0(x, y, lam, maxit, eps)
+#   }
+#   if (family == "poisson") {
+#     out <- poisl0(x, y, lam, maxit, eps)
+#   }
+  out <- l0araC(x, y, family, lam, maxit, eps)
   # output
-  res <- list(beta = out$beta, df = sum(out$beta!=0), lambda = lam, iter = out$iter, family = out$family)
+  res <- list(beta = drop(out$beta), df = sum(out$beta!=0), lambda = lam, iter = out$iter, family = family, x = x, y = y)
   class(res) <- "l0ara"
   return(res)
 }
