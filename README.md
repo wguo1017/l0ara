@@ -6,7 +6,7 @@ l0ara
 
 ### What is it?
 
-`l0ara` fits regularization for linear or generalized linear models with $L_0$ penalty.  Adaptive ridge algorithms are used to fit the models.
+`l0ara` fits regularization for linear or generalized linear models with L0 penalty.  Adaptive ridge algorithms are used to fit the models.
 
 ### Installation
 To install from `github`:
