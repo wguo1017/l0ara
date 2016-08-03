@@ -1,7 +1,6 @@
 l0ara
 ===
 
-[![Build Status](https://travis-ci.org/wguo1990/l0ara.svg?branch=master)](https://travis-ci.org/wguo1990/l0ara)
 [![](http://www.r-pkg.org/badges/version/l0ara)](https://cran.r-project.org/package=l0ara)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/l0ara)](https://cran.r-project.org/package=l0ara)
 
