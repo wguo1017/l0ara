@@ -4,7 +4,7 @@
 #' @param x Input matrix as in \code{l0ara}.
 #' @param y Response variable as in \code{l0ara}.
 #' @param family Response type as in \code{l0ara}.
-#' @param lam A user supplied \code{lambda} sequence in descending or asecending order.
+#' @param lam A user supplied \code{lambda} sequence in descending or asecending order. This function does not fit models. To fit a model with given \code{lam} value, use \code{l0ara}.
 #' @param measure Loss function used for corss validation. \code{measurer="mse"} or \code{"mae"} for all models. \code{"measure"="class"} only for logsitic regression.
 #' @param nfolds Number of folds. Default value is 10. Smallest value is 3.
 #' @param maxit Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.
