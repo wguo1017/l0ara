@@ -24,7 +24,7 @@ predict.l0ara <- function(object, newx, type=c("link", "response", "coefficients
     if (object$family=="logit") {
       return(drop(1*(eta>0)))
     } else {
-      stop("type='class' can only be used with family='binomial'")
+      stop("type='class' can only be used with family='logit'")
     }
   }
 }
@@ -90,7 +90,7 @@ print.l0ara <- function(x, ...){
 #' @seealso \code{predict}, \code{coef} methods and \code{l0ara} function.
 #' @export
 print.cv.l0ara <- function(x, ...){
-  measure <- switch(x$measure, mse = "Mean square error (MSE)", mae = "Mean absolute error (MAE)")
+  measure <- switch(x$measure, mse = "Mean square error", mae = "Mean absolute error", class = "Misclassification rate", auc = "Area under the curve")
   family <- switch(x$family, gaussian = "Linear regression", logit = "Logistic regression", poisson = "Poisson regression", inv.gaussian = "Inverse gaussian regression", gamma = "Gamma regression" )
   cat("Number of Lambda used : ", length(x$lam), "\n")
   cat("Optimal Lambda : ", x$lam.min, "\n")
@@ -104,11 +104,12 @@ print.cv.l0ara <- function(x, ...){
 #' @param x Fitted "l0ara" object.
 #' @param auc logical; if \code{TRUE}, produces \code{auc} curve for \code{family=logit}.
 #' @param split logical; if if \code{TRUE}, produces seperate plots.
+#' @param col color of the dots.
 #' @param ... Not used argument.
 #' @author Wenchuan Guo <wguo007@ucr.edu>
 #' @seealso \code{predict}, \code{coef} methods and \code{l0ara} function.
 #' @export
-plot.l0ara <- function(x, auc = FALSE, split = FALSE, ...){
+plot.l0ara <- function(x, auc = FALSE, split = FALSE, col = 4, ...){
   nplots <- ifelse(auc, 2, 1)
   if(!split){
     par(mfrow=c(1,nplots))
@@ -116,8 +117,8 @@ plot.l0ara <- function(x, auc = FALSE, split = FALSE, ...){
   resp <- predict(x, type="response")
   lp <-predict(x, type="link")
   plot(lp, resp, xlab="Linear predictor", ylab="Fitted value", pch=20, main="Linear predictor v.s. Fitted", ...)
-  points(lp,x$y,col=3, pch=20)
-  legend("bottomright", legend = c("Fitted","Truth"), col=c(1,3), pch=rep(20,2))
+  points(lp,x$y,col=col, pch=20)
+  legend("bottomright", legend = c("Fitted","Truth"), col=c(1,col), pch=rep(20,2))
 
   if(x$family=="logit" & auc){
     n.thres <- 50
@@ -131,12 +132,26 @@ plot.l0ara <- function(x, auc = FALSE, split = FALSE, ...){
       area[i] <- (tp[i]-fp[i]+1)/2
     }
     plot(NA, xlab="False positive rate", ylab="True positive rate", xlim=c(0,1), ylim=c(0,1), main=paste("ROC curve for lambda =", x$lam), sub = paste("max auc = ", round(max(area), 2), ";", "threshold = ", round(thres[which.max(area)],2)), ...)
-    lines(fp, tp, pch=19, col=3, type="b", lty=2)
+    lines(fp, tp, pch=19, col=col, type="b", lty=2)
   }
 }
 
+#' plot for an "cv.l0ara" object
+#' @description Produces curves from a fitted "cv.l0ara" object.
+#' @param x Fitted "cv.l0ara" object.
+#' @param col color of the dots.
+#' @param ... Not used argument.
+#' @author Wenchuan Guo <wguo007@ucr.edu>
+#' @seealso \code{predict}, \code{coef} methods, \code{cv.l0ara} and \code{l0ara} function.
+#' @export
 
-
+plot.cv.l0ara <- function(x, col = 3, ...) {
+  cv.u <- x$cv.error + x$cv.std
+  cv.l <-x$cv.error - x$cv.std
+  main <- switch(x$family, gaussian = "Linear regression", logit = "Logistic regression", poisson = "Poisson regression", inv.gaussian = "Inverse gaussian regression", gamma = "Gamma regression" )
+  plot(x = x$lambda, y = x$cv.error, main = main, ylim = range(cv.l, cv.u), xlab = "Lambda", ylab = x$name, col = col, pch = 19, sub = paste("Optimal lambda = ", round(x$lam.min, 2)))
+  abline(v = x$lam.min, lty = 3)
+}
 
 
 
