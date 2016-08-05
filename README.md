@@ -9,7 +9,7 @@ l0ara
 `l0ara` fits regularization for linear or generalized linear models with L0 penalty.  Adaptive ridge algorithms are used to fit the models.
 
 ### Installation
-To install the latest version from `github`:
+To install the latest version (0.1.3) from `github` :
 ```r
 install.packages("devtools")
 devtools::install_github("wguo1990/l0ara")
