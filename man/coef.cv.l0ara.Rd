@@ -15,7 +15,7 @@
 The object returns the coefficients.
 }
 \description{
-This function print the coefficients from the model with the optimal \code{lambda}.
+Print the coefficients from the model with the optimal \code{lambda}.
 }
 \details{
 This function fit the model with the optimal \code{lambda} first and then print the coefficients. This function makes it easier to use the results to make a prediction or to see the fitted model.

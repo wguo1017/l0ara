@@ -15,7 +15,7 @@
 The object returns the coefficients.
 }
 \description{
-This function print the coefficients from the model.
+Print the coefficients from the model.
 }
 \details{
 This function makes it easier to use the results to make a prediction or to see the fitted model.
