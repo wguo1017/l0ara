@@ -1,5 +1,5 @@
 #' make predictions from a "l0ara" object.
-#' @description This function makes predictions from the model.
+#' @description Make predictions from the model.
 #' @param object Fitted "l0ara" object.
 #' @param newx Matrix of new values for x at which predictions are to be made. Must be a matrix.
 #' @param type Type of prediction required. "link" gives the linear predictors(for "gaussian" models it gives the fitted values). "response" gives the fitted probabilities for "logit" and fitted mean for "poisson". "coefficients" gives the coefficients which is same as "coef" function. "class" (applies only to "logit") produces the class label corresponding to the maximum probability.
@@ -30,7 +30,7 @@ predict.l0ara <- function(object, newx, type=c("link", "response", "coefficients
 }
 
 #' print coefficients from a "l0ara" object.
-#' @description This function print the coefficients from the model.
+#' @description Print the coefficients from the model.
 #' @param object Fitted "l0ara" object.
 #' @param ... Not used argument.
 #' @details This function makes it easier to use the results to make a prediction or to see the fitted model.
@@ -47,7 +47,7 @@ coef.l0ara <- function(object, ...){
 }
 
 #' print coefficients from a "cv.l0ara" object.
-#' @description This function print the coefficients from the model with the optimal \code{lambda}.
+#' @description Print the coefficients from the model with the optimal \code{lambda}.
 #' @param object Fitted "cv.l0ara" object.
 #' @param ... Not used argument.
 #' @details This function fit the model with the optimal \code{lambda} first and then print the coefficients. This function makes it easier to use the results to make a prediction or to see the fitted model.
@@ -66,7 +66,7 @@ coef.cv.l0ara <- function(object, ...){
 
 
 #' summarizing the fits from a "l0ara" object.
-#' @description This function print the general information of the fit.
+#' @description Print the general information of the fit.
 #' @param x Fitted "l0ara" object.
 #' @param ... Not used argument.
 #' @details This function makes it easier to see the fitted model.
@@ -82,7 +82,7 @@ print.l0ara <- function(x, ...){
 }
 
 #' summarizing the fits from a "cv.l0ara" object.
-#' @description This function print the general information of the cross validated fit.
+#' @description Print the general information of the cross validated fit.
 #' @param x Fitted "cv.l0ara" object.
 #' @param ... Not used argument.
 #' @details This function makes it easier to see the cross validation results.
@@ -120,12 +120,23 @@ plot.l0ara <- function(x, auc = FALSE, split = FALSE, ...){
   legend("bottomright", legend = c("Fitted","Truth"), col=c(1,3), pch=rep(20,2))
 
   if(x$family=="logit" & auc){
-    pred <- predict(x, x$x, type="class")
-    fp <- mean(pred[x$y==0]==1)
-    tp <- mean(pred[x$y==1]==1)
-    area <- fp*tp/2+(tp+1)*(1-fp)/2
-    plot(NA, xlab="False positive rate", ylab="True positive rate", xlim=c(0,1), ylim=c(0,1), main=paste("ROC curve for lambda =", x$lam,";", "AUC =", area), ...)
-    lines(c(0,fp,1), c(0,tp,1), col=4)
-    lines(c(0,1), c(0,1), lty=2)
+    n.thres <- 50
+    thres <- seq(0, 1, length=n.thres)
+    prob <- predict(x, type="response")
+    fp = tp = area = rep(0, n.thres)
+    for(i in 1:n.thres){
+      pred <- ifelse(prob>thres[i], 1, 0)
+      fp[i] <- mean(pred[x$y==0]==1)
+      tp[i] <- mean(pred[x$y==1]==1)
+      area[i] <- (tp[i]-fp[i]+1)/2
+    }
+    plot(NA, xlab="False positive rate", ylab="True positive rate", xlim=c(0,1), ylim=c(0,1), main=paste("ROC curve for lambda =", x$lam), sub = paste("max auc = ", round(max(area), 2), ";", "threshold = ", round(thres[which.max(area)],2)), ...)
+    lines(fp, tp, pch=19, col=3, type="b", lty=2)
   }
 }
+
+
+
+
+
+
