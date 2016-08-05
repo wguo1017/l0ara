@@ -2,8 +2,8 @@ Package: l0ara
 Type: Package
 Title: Sparse Generalized Linear Model with L0 Approximation for Feature
     Selection
-Version: 0.1.2
-Date: 2016-06-28
+Version: 0.1.3
+Date: 2016-08-04
 Author: Wenchuan Guo, Zhenqiu Liu, Fengzhu Sun, Dermot P McGovern, Sandra
     Orsulic
 Maintainer: Wenchuan Guo <wguo007@ucr.edu>

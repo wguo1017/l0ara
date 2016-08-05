@@ -4,7 +4,7 @@
 \alias{plot.l0ara}
 \title{plot for an "l0ara" object}
 \usage{
-\method{plot}{l0ara}(x, auc = FALSE, split = FALSE, ...)
+\method{plot}{l0ara}(x, auc = FALSE, split = FALSE, col = 4, ...)
 }
 \arguments{
 \item{x}{Fitted "l0ara" object.}
@@ -12,6 +12,8 @@
 \item{auc}{logical; if \code{TRUE}, produces \code{auc} curve for \code{family=logit}.}
 
 \item{split}{logical; if if \code{TRUE}, produces seperate plots.}
+
+\item{col}{color of the dots.}
 
 \item{...}{Not used argument.}
 }

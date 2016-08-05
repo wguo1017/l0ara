@@ -35,6 +35,7 @@ An object with S3 class "cv.l0ara" containing:
  \item{family}{Model used}
  \item{x}{Design matrix}
  \item{y}{Response variable}
+ \item{name}{full name of the measure}
 }
 \description{
 Does k-fold cross-validation for l0ara, produces a plot, and returns the optimal \code{lambda}
