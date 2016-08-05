@@ -43,8 +43,8 @@ x <- matrix(rnorm(n*p), n, p)
 beta <- c(1,0,2,3,rep(0,p-4))
 noise <- rnorm(n)
 y <- x\%*\%beta+noise
-# fit sparse linear regression
-res.gaussian <- l0ara(x, y, family="gaussian", 1)
+# fit sparse linear regression using BIC 
+res.gaussian <- l0ara(x, y, family="gaussian", log(n))
 
 # predict for new observations
 print(res.gaussian)
@@ -75,8 +75,8 @@ x <- matrix(rnorm(n*p), n, p)
 beta <- c(1,0,0.5,0.3,rep(0,p-4))
 mu <- exp(x\%*\%beta)
 y <- rpois(n, mu)
-# fit sparse Poisson regression
-res.pois <- l0ara(x, y, family="poisson", 0.7)
+# fit sparse Poisson regression using AIC
+res.pois <- l0ara(x, y, family="poisson", 2)
 
 # predict for new observations
 print(res.pois)

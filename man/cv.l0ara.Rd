@@ -13,7 +13,7 @@ cv.l0ara(x, y, family, lam, measure, nfolds, maxit, eps, seed)
 
 \item{family}{Response type as in \code{l0ara}.}
 
-\item{lam}{A user supplied \code{lambda} sequence in descending or asecending order.}
+\item{lam}{A user supplied \code{lambda} sequence in descending or asecending order. This function does not fit models. To fit a model with given \code{lam} value, use \code{l0ara}.}
 
 \item{measure}{Loss function used for corss validation. \code{measurer="mse"} or \code{"mae"} for all models. \code{"measure"="class"} only for logsitic regression.}
 
