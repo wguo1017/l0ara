@@ -20,7 +20,7 @@
 The object returned depends the functions.
 }
 \description{
-This function makes predictions from the model.
+Make predictions from the model.
 }
 \details{
 This function makes it easier to use the results to make a prediction or to see the fitted model.

@@ -12,7 +12,7 @@
 \item{...}{Not used argument.}
 }
 \description{
-This function print the general information of the fit.
+Print the general information of the fit.
 }
 \details{
 This function makes it easier to see the fitted model.
