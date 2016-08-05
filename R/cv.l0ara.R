@@ -20,6 +20,7 @@
 #'  \item{family}{Model used}
 #'  \item{x}{Design matrix}
 #'  \item{y}{Response variable}
+#'  \item{name}{full name of the measure}
 #' @author
 #' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 #' @seealso \code{l0ara}.
@@ -36,7 +37,7 @@
 #' fit <- cv.l0ara(x, y, family="gaussian", lam, measure = "mse")
 #' @export
 
-cv.l0ara <- function(x, y, family = c("gaussian", "logit"), lam, measure = c("mse", "mae","class", "auc"), nfolds = 10,  maxit = 10^3, eps = 1e-04, seed){
+cv.l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, measure = c("mse", "mae","class", "auc"), nfolds = 10,  maxit = 10^3, eps = 1e-04, seed){
   measure <- match.arg(measure)
   # error checking
   if (class(x) != "matrix") {
@@ -80,22 +81,32 @@ cv.l0ara <- function(x, y, family = c("gaussian", "logit"), lam, measure = c("ms
       error[,i] <- do.call(cbind, lapply(pred, function(pp) mean(abs(pp-y[which]))))
     }
     if(measure == "class") {
-      pred <- lapply(res[[i]], predict,x[which,],type="class")
-      error[,i] <- do.call(cbind, lapply(pred, function(pp) mean((y[which]-pp)==0)))
+      if(family=="logit"){
+        pred <- lapply(res[[i]], predict,x[which,],type="class")
+        error[,i] <- do.call(cbind, lapply(pred, function(pp) mean((y[which]-pp)!=0)))
+      } else {
+        stop("type='class' can only be used with family='logit'")
+      }
     }
     if(measure == "auc") {
-      pred <- lapply(res[[i]], predict,x[which,],type="class")
-      error[,i] <- do.call(cbind, lapply(pred, function(pp){
-        fp <- mean(pp[y[which]==0]==1)
-        tp <- mean(pp[y[which]==1]==1)
-        return( (tp-fp+1)/2 )
-      }))
+      if(family=="logit") {
+        pred <- lapply(res[[i]], predict,x[which,],type="class")
+        error[,i] <- do.call(cbind, lapply(pred, function(pp){
+          fp <- mean(pp[y[which]==0]==1)
+          tp <- mean(pp[y[which]==1]==1)
+          return( (tp-fp+1)/2 )
+        }))
+      } else {
+        stop("type='auc' can only be used with family='logit'")
+      }
+
     }
   }
   cv.std <- apply(error, 1, sd)/sqrt(n)
   cv.error <- rowMeans(error)
-  lam.min <- lam[which.min(cv.error)]
-  out <- list(cv.error=cv.error, cv.std = cv.std, lam.min=lam.min, measure=measure, lam=lam, family=family, x=x, y=y)
+  lam.min <- ifelse(measure=="auc", lam[which.max(cv.error)], lam[which.min(cv.error)])
+  name <- switch(measure, mse = "Mean square error", mae = "Mean absolute error", class = "Misclassification rate", auc = "Area under the curve")
+  out <- list(cv.error=cv.error, cv.std = cv.std, lam.min=lam.min, measure=measure, lambda=lam, family=family, x=x, y=y, name = name)
   class(out) <- "cv.l0ara"
   return(out)
 }
