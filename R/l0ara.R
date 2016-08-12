@@ -16,8 +16,8 @@
 #'  \item{x}{Design matrix}
 #'  \item{y}{Response variable}
 #' @author
-#' Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-#' @seealso \code{cv.l0ara}, \code{predict}, \code{coef} methods.
+#' Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+#' @seealso \code{\link{cv.l0ara}}, \code{\link{predict.l0ara}}, \code{\link{coef.l0ara}},  \code{\link{plot.l0ara}} methods.
 #' @useDynLib l0ara
 #' @importFrom Rcpp evalCpp
 #' @import stats
