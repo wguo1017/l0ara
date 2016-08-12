@@ -35,7 +35,7 @@ An object with S3 class "cv.l0ara" containing:
  \item{family}{Model used}
  \item{x}{Design matrix}
  \item{y}{Response variable}
- \item{name}{full name of the measure}
+ \item{name}{Full name of the measure}
 }
 \description{
 Does k-fold cross-validation for l0ara, produces a plot, and returns the optimal \code{lambda}
@@ -59,6 +59,6 @@ fit <- cv.l0ara(x, y, family="gaussian", lam, measure = "mse")
 Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
-\code{l0ara}.
+\code{\link{l0ara}}, \code{\link{coef.cv.l0ara}}, \code{\link{plot.cv.l0ara}} methods.
 }
 

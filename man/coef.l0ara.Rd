@@ -21,9 +21,9 @@ Print the coefficients from the model.
 This function makes it easier to use the results to make a prediction or to see the fitted model.
 }
 \author{
-Wenchuan Guo <wguo007@ucr.edu>
+Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
-\code{predict} method and \code{l0ara} function.
+\code{\link{predict}} method and \code{\link{l0ara}} function.
 }
 

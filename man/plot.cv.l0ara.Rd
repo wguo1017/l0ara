@@ -17,9 +17,9 @@
 Produces curves from a fitted "cv.l0ara" object.
 }
 \author{
-Wenchuan Guo <wguo007@ucr.edu>
+Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
-\code{predict}, \code{coef} methods, \code{cv.l0ara} and \code{l0ara} function.
+\code{\link{predict}}, \code{\link{coef}} methods, \code{\link{cv.l0ara}} and \code{\link{l0ara}} function.
 }
 

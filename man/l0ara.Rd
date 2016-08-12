@@ -87,6 +87,6 @@ coef(res.pois)
 Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
-\code{cv.l0ara}, \code{predict}, \code{coef} methods.
+\code{\link{cv.l0ara}}, \code{\link{predict.l0ara}}, \code{\link{coef.l0ara}},  \code{\link{plot.l0ara}} methods.
 }
 
