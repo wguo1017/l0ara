@@ -1,4 +1,6 @@
 language: R
-sudo: false
+sudo: required
 cache: packages
-cran: https://cran.rstudio.com/
+apt_packages:
+  - r-cran-Rcpp
+  - r-cran-RcppArmadillo
