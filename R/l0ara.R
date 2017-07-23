@@ -1,10 +1,11 @@
 #' fit a generalized linear model with l0 penalty
 #' @description An adaptive ridge algorithm for feature selection with L0 penalty.
-#' @usage  l0ara(x, y, family, lam, maxit, eps)
+#' @usage  l0ara(x, y, family, lam, standardize, maxit, eps)
 #' @param x Input matrix, of dimension nobs x nvars; each row is an observation vector.
 #' @param y Response variable. Quantitative for \code{family="gaussian"}; positive quantitative for \code{family="gamma"} or \code{family="inv.gaussian"} ; a factor with two levels for \code{family="logit"}; non-negative counts for \code{family="poisson"}.
 #' @param family Response type(see above).
-#' @param lam A user supplied \code{lambda} value. Try use \code{cv.l0ara} first to select optimal tunning and then refit with \code{lam.min} if you have a \code{lam} sequence. To use AIC, set \code{lam=2}; to use BIC, set \code{lam=log(n)}.
+#' @param lam A user supplied \code{lambda} value. If you have a \code{lam} sequence, use \code{cv.l0ara} first to select optimal tunning and then refit with \code{lam.min} . To use AIC, set \code{lam=2}; to use BIC, set \code{lam=log(n)}.
+#' @param standardize Logical flag for data normalization. If \code{standardize=TRUE}(default), independent variables in the design matrix \code{x} will be standardized with mean 0 and standard deviation 1.
 #' @param maxit Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.
 #' @param eps Convergence threshold. Default value is \code{1e-4}.
 #' @details The sequence of models indexed by the parameter lambda is fit using adptive ridge algorithm. The objective function for generalized linear models (including \code{family} above) is defined to be \deqn{-(log likelihood)+(\lambda/2)*|\beta|_0} \eqn{|\beta|_0} is the number of non-zero elements in \eqn{\beta}. To select the "best" model with AIC or BIC criterion, let \code{lambda} to be 2 or \code{log(n)}. This adaptive ridge algorithm is developed to approximate L0 penalized generalized linear models with sequential optimization and is efficient for high-dimensional data.
@@ -72,7 +73,7 @@
 #' coef(res.pois)
 
 #' @export
-l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, maxit = 10^3, eps = 1e-04){
+l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, standardize, maxit = 10^3, eps = 1e-04){
   # error checking
   if (class(x) != "matrix") {
     tmp <- try(x <- model.matrix(~0 + ., data = x), silent = TRUE)
@@ -91,7 +92,7 @@ l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv
     stop("'lam' was not found(must be a postiive number)")
   }
   if(length(lam)>1){
-    stop("Require lenght 1 for 'lam'")
+    stop("Require lenght >=1 for 'lam'")
   }
   if(lam < 0) {
     warning("lambda < 0; set to 0")

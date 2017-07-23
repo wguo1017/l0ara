@@ -2,7 +2,7 @@
 % Please edit documentation in R/cv.l0ara.R
 \name{cv.l0ara}
 \alias{cv.l0ara}
-\title{Cross validation for l0ara}
+\title{cross-validation for l0ara}
 \usage{
 cv.l0ara(x, y, family, lam, measure, nfolds, maxit, eps, seed)
 }
@@ -56,7 +56,7 @@ lam <- c(0.1, 0.3, 0.5)
 fit <- cv.l0ara(x, y, family="gaussian", lam, measure = "mse")
 }
 \author{
-Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
 \code{\link{l0ara}}, \code{\link{coef.cv.l0ara}}, \code{\link{plot.cv.l0ara}} methods.

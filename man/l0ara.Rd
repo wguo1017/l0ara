@@ -4,7 +4,7 @@
 \alias{l0ara}
 \title{fit a generalized linear model with l0 penalty}
 \usage{
-l0ara(x, y, family, lam, maxit, eps)
+l0ara(x, y, family, lam, standardize, maxit, eps)
 }
 \arguments{
 \item{x}{Input matrix, of dimension nobs x nvars; each row is an observation vector.}
@@ -13,7 +13,9 @@ l0ara(x, y, family, lam, maxit, eps)
 
 \item{family}{Response type(see above).}
 
-\item{lam}{A user supplied \code{lambda} value. Try use \code{cv.l0ara} first to select optimal tunning and then refit with \code{lam.min} if you have a \code{lam} sequence. To use AIC, set \code{lam=2}; to use BIC, set \code{lam=log(n)}.}
+\item{lam}{A user supplied \code{lambda} value. If you have a \code{lam} sequence, use \code{cv.l0ara} first to select optimal tunning and then refit with \code{lam.min} . To use AIC, set \code{lam=2}; to use BIC, set \code{lam=log(n)}.}
+
+\item{standardize}{Logical flag for data normalization. If \code{standardize=TRUE}(default), independent variables in the design matrix \code{x} will be standardized with mean 0 and standard deviation 1.}
 
 \item{maxit}{Maximum number of passes over the data for \code{lambda}. Default value is \code{1e3}.}
 
@@ -84,7 +86,7 @@ predict(res.pois, newx=matrix(rnorm(3,p),3,p))
 coef(res.pois)
 }
 \author{
-Wenchuan Guo <wguo007@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
 \seealso{
 \code{\link{cv.l0ara}}, \code{\link{predict.l0ara}}, \code{\link{coef.l0ara}},  \code{\link{plot.l0ara}} methods.
