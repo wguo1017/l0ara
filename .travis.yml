@@ -1,4 +1,0 @@
-language: r
-sudo: required
-cache: packages
-cran: https://cran.rstudio.com/
