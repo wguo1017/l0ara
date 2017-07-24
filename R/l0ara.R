@@ -73,7 +73,7 @@
 #' coef(res.pois)
 
 #' @export
-l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, standardize, maxit = 10^3, eps = 1e-04){
+l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv.gaussian"), lam, standardize = TRUE, maxit = 10^3, eps = 1e-04){
   # error checking
   if (class(x) != "matrix") {
     tmp <- try(x <- model.matrix(~0 + ., data = x), silent = TRUE)
@@ -105,8 +105,18 @@ l0ara <- function(x, y, family = c("gaussian", "logit", "gamma", "poisson", "inv
   if (length(y)!=np[1]){
     stop("length of y not equal to the number of rows of x")
   }
+  if(standardize) {
+    xx = scale(x)
+  } else {
+    xx = x
+  }
+  if(family == "gaussian" & standardize) {
+    yy = y - mean(y)
+  } else {
+    yy = y
+  }
   
-  out <- l0araC(x, y, family, lam, maxit, eps)
+  out <- l0araC(xx, y, family, lam, maxit, eps)
   # output
   res <- list(beta = drop(out$beta), df = sum(out$beta!=0), lambda = lam, iter = out$iter, family = family, x = x, y = y)
   class(res) <- "l0ara"

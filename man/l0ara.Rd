@@ -85,10 +85,9 @@ print(res.pois)
 predict(res.pois, newx=matrix(rnorm(3,p),3,p))
 coef(res.pois)
 }
-\author{
-Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-}
 \seealso{
 \code{\link{cv.l0ara}}, \code{\link{predict.l0ara}}, \code{\link{coef.l0ara}},  \code{\link{plot.l0ara}} methods.
 }
-
+\author{
+Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+}

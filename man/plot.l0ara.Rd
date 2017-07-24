@@ -20,10 +20,9 @@
 \description{
 Two plots are availiable: a plot of fitted value against linear predictor; \code{roc}(\code{auc}) curve for \code{family="logit"}.
 }
+\seealso{
+\code{\link{predict}}, \code{\link{coef}} methods and \code{\link{l0ara}} function.
+}
 \author{
 Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
 }
-\seealso{
-\code{predict}, \code{coef} methods and \code{l0ara} function.
-}
-

@@ -25,10 +25,9 @@ Make predictions from the model.
 \details{
 This function makes it easier to use the results to make a prediction or to see the fitted model.
 }
-\author{
-Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-}
 \seealso{
 \code{\link{coef}} method and \code{\link{l0ara}} function.
 }
-
+\author{
+Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+}

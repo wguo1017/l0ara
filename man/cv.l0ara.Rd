@@ -55,10 +55,9 @@ y <- x\%*\%beta+noise
 lam <- c(0.1, 0.3, 0.5)
 fit <- cv.l0ara(x, y, family="gaussian", lam, measure = "mse")
 }
-\author{
-Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-}
 \seealso{
 \code{\link{l0ara}}, \code{\link{coef.cv.l0ara}}, \code{\link{plot.cv.l0ara}} methods.
 }
-
+\author{
+Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+}

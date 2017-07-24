@@ -17,10 +17,9 @@ Print the general information of the cross validated fit.
 \details{
 This function makes it easier to see the cross-validation results.
 }
-\author{
-Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-}
 \seealso{
 \code{\link{predict}}, \code{\link{coef}} methods and \code{\link{l0ara}} function.
 }
-
+\author{
+Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
+}

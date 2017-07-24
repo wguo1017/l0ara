@@ -113,7 +113,7 @@ print.cv.l0ara <- function(x, ...){
 #' @param ... Not used argument.
 #' @author
 #' Wenchuan Guo <wguo007@ucr.edu>, Shujie Ma <shujie.ma@ucr.edu>, Zhenqiu Liu <Zhenqiu.Liu@cshs.org>
-#' @seealso \code{predict}, \code{coef} methods and \code{l0ara} function.
+#' @seealso \code{\link{predict}}, \code{\link{coef}} methods and \code{\link{l0ara}} function.
 #' @export
 plot.l0ara <- function(x, auc = FALSE, split = FALSE, col = 4, ...){
   nplots <- ifelse(auc, 2, 1)

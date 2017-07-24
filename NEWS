@@ -1,3 +1,7 @@
+# l0ara 0.1.5
+- added standardize option in l0ara.R
+- fixed cran issues
+
 # l0ara 0.1.4
 - fixed typos and added links in documentation
 - changed subtitle name in ROC plot

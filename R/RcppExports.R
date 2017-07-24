@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 l0araC <- function(x, y, family, lam, maxit, eps) {
-    .Call('l0ara_l0araC', PACKAGE = 'l0ara', x, y, family, lam, maxit, eps)
+    .Call('_l0ara_l0araC', PACKAGE = 'l0ara', x, y, family, lam, maxit, eps)
 }
 
